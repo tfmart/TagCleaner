@@ -86,4 +86,18 @@ final class TagCleanerTests: XCTestCase {
         XCTAssertEqual(output2, expectation)
         XCTAssertEqual(output3, expectation)
     }
+    
+    func testRemix() {
+        let inputWithoutName = "Die For You (Remix)"
+        let inputWithName = "Juice (Breakbot Remix)"
+        let inputWithEdit = "Head Over Heels (Hughes 7\" Edit)"
+        
+        let output1 = tagCleaner.removeRemix(from: inputWithoutName)
+        let output2 = tagCleaner.removeRemix(from: inputWithName)
+        let output3 = tagCleaner.removeRemix(from: inputWithEdit)
+        
+        XCTAssertEqual("Die For You", output1)
+        XCTAssertEqual("Juice", output2)
+        XCTAssertEqual("Head Over Heels", output3)
+    }
 }

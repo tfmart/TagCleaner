@@ -199,4 +199,48 @@ struct TCRegex {
         }
         ")"
     }
+    
+    //MARK: - Remix
+    let remixRegex = Regex {
+        ChoiceOf {
+            Regex {
+                ZeroOrMore(.whitespace)
+                "("
+                ZeroOrMore {
+                    #/./#
+                }
+                ChoiceOf {
+                    "Remix"
+                    "Edit"
+                    "Mix"
+                    "Dub"
+                    "Version"
+                }
+                ZeroOrMore {
+                    #/./#
+                }
+                ")"
+                ZeroOrMore(.whitespace)
+            }
+            Regex {
+                ZeroOrMore(.whitespace)
+                "["
+                ZeroOrMore {
+                    #/./#
+                }
+                ChoiceOf {
+                    "Remix"
+                    "Edit"
+                    "Mix"
+                    "Dub"
+                    "Version"
+                }
+                ZeroOrMore {
+                    #/./#
+                }
+                "]"
+                ZeroOrMore(.whitespace)
+            }
+        }
+    }
 }

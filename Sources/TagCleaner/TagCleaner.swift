@@ -53,6 +53,11 @@ public struct TagCleaner {
         return filter(expressions, from: input)
     }
     
+    public func removeRemix(from input: String) -> String {
+        let remixRegex = regex.remixRegex
+        return filter(remixRegex, from: input)
+    }
+    
     public func createFilter(with filters: TCFilter...) -> TCCustomFilter {
         return TCCustomFilter.init(filters: filters)
     }

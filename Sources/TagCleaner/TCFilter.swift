@@ -12,6 +12,7 @@ public enum TCFilter: Int8, CaseIterable {
     case featuredArtists
     case remastered
     case reissue
+    case remix
     
     private var regex: TCRegex {
         .init()
@@ -40,6 +41,10 @@ public enum TCFilter: Int8, CaseIterable {
                 regex.dashReissueRegex,
                 regex.bracketsReissueRegex,
                 regex.parenthesesReissueRegex
+            ]
+        case .remix:
+            [
+                regex.remix
             ]
         }
     }
