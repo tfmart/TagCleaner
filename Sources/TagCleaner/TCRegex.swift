@@ -57,11 +57,11 @@ struct TCRegex {
     
     // MARK: - Remastered
     let liveRemasteredRegex = Regex {
-        "Live"
+        "/Live"
         One(.whitespace)
         "/"
         One(.whitespace)
-        "Remastered"
+        "Remastered/"
     }
     
     let parenthesesRemasteredRegex = Regex {
@@ -89,41 +89,39 @@ struct TCRegex {
     }
     
     let suffixRemasteredRegex = Regex {
-        Regex {
-            One(.whitespace)
-            "-"
-            One(.whitespace)
-            Repeat(count: 4) {
-                One(.digit)
-            }
-            Optionally {
-                Capture {
-                    Regex {
-                        One(.whitespace)
-                        "-"
-                    }
-                }
-            }
-            One(.whitespace)
-            ZeroOrMore {
-                #/./#
-            }
-            "Re"
-            Optionally {
-                "-"
-            }
-            One(.anyOf("Mm"))
-            "aster"
-            Optionally {
-                Capture {
-                    "ed"
-                }
-            }
-            ZeroOrMore {
-                #/./#
-            }
-            #/$/#
+        One(.whitespace)
+        "-"
+        One(.whitespace)
+        Repeat(count: 4) {
+            One(.digit)
         }
+        Optionally {
+            Capture {
+                Regex {
+                    One(.whitespace)
+                    "-"
+                }
+            }
+        }
+        One(.whitespace)
+        ZeroOrMore {
+            #/./#
+        }
+        "Re"
+        Optionally {
+            "-"
+        }
+        One(.anyOf("Mm"))
+        "aster"
+        Optionally {
+            Capture {
+                "ed"
+            }
+        }
+        ZeroOrMore {
+            #/./#
+        }
+        #/$/#
     }
     
     let prefixRemasteredRegex = Regex {
