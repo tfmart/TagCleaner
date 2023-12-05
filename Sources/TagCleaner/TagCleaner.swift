@@ -42,4 +42,14 @@ public struct TagCleaner {
         
         return filter(expressions, from: input)
     }
+    
+    func removeReissue(from input: String) -> String {
+        let expressions: [any RegexComponent] = [
+            regex.dashReissueRegex,
+            regex.bracketsReissueRegex,
+            regex.parenthesesReissueRegex
+        ]
+        
+        return filter(expressions, from: input)
+    }
 }

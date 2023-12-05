@@ -5,7 +5,7 @@ import RegexBuilder
 final class TagCleanerTests: XCTestCase {
     var tagCleaner: TagCleaner = .init()
     
-    func testCleanExplicitRule() {
+    func testCleanExplicitFilter() {
         let explicitInput = "One More Night (Explicit)"
         var filteredOutput = tagCleaner.removeCleanExplicit(from: explicitInput)
         
@@ -13,7 +13,7 @@ final class TagCleanerTests: XCTestCase {
         XCTAssertEqual(filteredOutput, "One More Night")
     }
     
-    func testCleanRule() {
+    func testCleanFilter() {
         let cleanInput = "One More Night (Clean)"
         var filteredOutput = tagCleaner.removeCleanExplicit(from: cleanInput)
         
@@ -21,17 +21,33 @@ final class TagCleanerTests: XCTestCase {
         XCTAssertEqual(filteredOutput, "One More Night")
     }
     
-    func testFeatRule() {
+    func testFeatFilter() {
         let inputWithParentheses = "After the Storm (feat. Tyler, The Creator & Bootsy Collins)"
         let inputWithBrackets = "After the Storm [feat. Tyler, The Creator & Bootsy Collins]"
-        let inputWithouSeparator = "After the Storm feat. Tyler, The Creator & Bootsy Collins"
+        let inputWithoutSeparator = "After the Storm feat. Tyler, The Creator & Bootsy Collins"
         
-        var output1: String = tagCleaner.removeFeature(from: inputWithParentheses)
-        var output2: String = tagCleaner.removeFeature(from: inputWithBrackets)
-        var output3: String = tagCleaner.removeFeature(from: inputWithouSeparator)
+        let output1: String = tagCleaner.removeFeature(from: inputWithParentheses)
+        let output2: String = tagCleaner.removeFeature(from: inputWithBrackets)
+        let output3: String = tagCleaner.removeFeature(from: inputWithoutSeparator)
         
         XCTAssertEqual(output1, "After the Storm")
         XCTAssertEqual(output2, "After the Storm")
         XCTAssertEqual(output3, "After the Storm")
+    }
+    
+    func testReissueFilter() {
+        let inputWithParentheses = "Album Title Re-issue"
+        let inputWithBrackets = "Album Title [Whatever Re-issue Whatever]"
+        let inputWithDash = "Album Title (Whatever Re-issue Whatever)"
+        
+        let output1: String = tagCleaner.removeReissue(from: inputWithParentheses)
+        let output2: String = tagCleaner.removeReissue(from: inputWithBrackets)
+        let output3: String = tagCleaner.removeReissue(from: inputWithDash)
+        
+        let expectation = "Album Title"
+        
+        XCTAssertEqual(output1, expectation)
+        XCTAssertEqual(output2, expectation)
+        XCTAssertEqual(output3, expectation)
     }
 }

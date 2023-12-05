@@ -156,4 +156,49 @@ struct TCRegex {
         "Version)"
         #/$/#
     }
+    
+    //MARK: - Reissue
+    let dashReissueRegex = Regex {
+        One(.whitespace)
+        "Re"
+        Optionally {
+            "-"
+        }
+        "issue"
+        #/$/#
+    }
+    
+    let bracketsReissueRegex = Regex {
+        One(.whitespace)
+        "["
+        ZeroOrMore(.reluctant) {
+            #/./#
+        }
+        "Re"
+        Optionally {
+            "-"
+        }
+        "issue"
+        ZeroOrMore(.reluctant) {
+            #/./#
+        }
+        "]"
+    }
+    
+    let parenthesesReissueRegex = Regex {
+        One(.whitespace)
+        "("
+        ZeroOrMore(.reluctant) {
+            #/./#
+        }
+        "Re"
+        Optionally {
+            "-"
+        }
+        "issue"
+        ZeroOrMore(.reluctant) {
+            #/./#
+        }
+        ")"
+    }
 }
