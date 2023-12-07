@@ -44,7 +44,7 @@ public enum TCFilter: Int8, CaseIterable {
             ]
         case .remix:
             [
-                regex.remix
+                regex.remixRegex
             ]
         }
     }

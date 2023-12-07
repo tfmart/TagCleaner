@@ -23,6 +23,8 @@ public struct TagCleaner {
         return filteredOutout
     }
     
+    public init() {}
+    
     public func removeCleanExplicit(from input: String) -> String {
         return filter(regex.cleanExplicit, from: input)
     }
