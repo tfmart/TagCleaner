@@ -13,6 +13,8 @@ public enum TCFilter: Int8, CaseIterable {
     case remastered
     case reissue
     case remix
+    case single
+    case ep
     
     private var regex: TCRegex {
         .init()
@@ -45,6 +47,16 @@ public enum TCFilter: Int8, CaseIterable {
         case .remix:
             [
                 regex.remixRegex
+            ]
+            
+        case .single:
+            [
+                regex.singleRegex
+            ]
+            
+        case .ep:
+            [
+                regex.epRegex
             ]
         }
     }

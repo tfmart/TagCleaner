@@ -243,4 +243,19 @@ struct TCRegex {
             }
         }
     }
+    
+    //MARK: - Single/EP
+    let singleRegex = Regex {
+        One(.whitespace)
+        "-"
+        One(.whitespace)
+        "Single"
+    }
+    
+    let epRegex = Regex {
+        One(.whitespace)
+        "-"
+        One(.whitespace)
+        "EP"
+    }
 }
