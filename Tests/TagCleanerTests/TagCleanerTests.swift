@@ -100,4 +100,23 @@ final class TagCleanerTests: XCTestCase {
         XCTAssertEqual("Juice", output2)
         XCTAssertEqual("Head Over Heels", output3)
     }
+    
+    func testSingle() {
+        let inputWithSingle = "So Nice - Single"
+        let output = tagCleaner.removeSingle(from: inputWithSingle)
+        
+        XCTAssertEqual("So Nice", output)
+    }
+    
+    func testEP() {
+        let inputWithEP = "Elliot - EP"
+        let output = tagCleaner.removeEP(from: inputWithEP)
+        XCTAssertEqual("Elliot", output)
+    }
+    
+    func testBonusTrack () {
+        let inputWithEP = "The Air That I Breathe (Bonus Track)"
+        let output = tagCleaner.removeBonusTrack(from: inputWithEP)
+        XCTAssertEqual("The Air That I Breathe", output)
+    }
 }

@@ -258,4 +258,17 @@ struct TCRegex {
         One(.whitespace)
         "EP"
     }
+    
+    //MARK: - Bonus Track
+    let bonusTrackRegex = Regex {
+        ZeroOrMore(.whitespace)
+        One(.anyOf("[("))
+        ZeroOrMore(.whitespace)
+        "Bonus"
+        Optionally {
+            ZeroOrMore(.whitespace)
+            "Track"
+        }
+        One(.anyOf(")]"))
+    }
 }

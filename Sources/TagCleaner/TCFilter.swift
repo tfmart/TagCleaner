@@ -15,6 +15,7 @@ public enum TCFilter: Int8, CaseIterable {
     case remix
     case single
     case ep
+    case bonusTrack
     
     private var regex: TCRegex {
         .init()
@@ -57,6 +58,10 @@ public enum TCFilter: Int8, CaseIterable {
         case .ep:
             [
                 regex.epRegex
+            ]
+        case .bonusTrack:
+            [
+            
             ]
         }
     }

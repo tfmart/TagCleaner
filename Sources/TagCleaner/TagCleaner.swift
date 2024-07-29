@@ -60,6 +60,21 @@ public struct TagCleaner {
         return filter(remixRegex, from: input)
     }
     
+    public func removeSingle(from input: String) -> String {
+        let singleRegex = regex.singleRegex
+        return filter(singleRegex, from: input)
+    }
+    
+    public func removeEP(from input: String) -> String {
+        let epRegex = regex.epRegex
+        return filter(epRegex, from: input)
+    }
+    
+    public func removeBonusTrack(from input: String) -> String {
+        let bonusTrackRegex = regex.bonusTrackRegex
+        return filter(bonusTrackRegex, from: input)
+    }
+    
     public func createFilter(with filters: TCFilter...) -> TCCustomFilter {
         return TCCustomFilter.init(filters: filters)
     }
