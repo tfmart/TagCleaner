@@ -9,73 +9,47 @@ import Foundation
 import RegexBuilder
 
 public struct TagCleaner {
-    internal var regex = TCRegex()
+    @TagFilter(.cleanExplicit) public var cleanExplicit
+    @TagFilter(.featuredArtists) public var featuredArtists
+    @TagFilter(.remastered) public var remastered
+    @TagFilter(.reissue) public var reissue
+    @TagFilter(.remix) public var remix
+    @TagFilter(.single) public var single
+    @TagFilter(.ep) public var ep
+    @TagFilter(.bonusTrack) public var bonusTrack
+    @TagFilter(.live) public var live
+    @TagFilter(.parody) public var parody
+    @TagFilter(.version) public var version
+    @TagFilter(.youtube) public var youtube
+    @TagFilter(.additionalArtists) public var additionalArtists
     
-    internal func filter(_ regex: any RegexComponent, from input: String) -> String {
-        return input.replacing(regex, with: "")
-    }
-    
-    internal func filter(_ expressions: [any RegexComponent], from input: String) -> String {
-        var filteredOutout = input
-        for regex in expressions {
-            filteredOutout = filteredOutout.replacing(regex, with: "")
-        }
-        return filteredOutout
-    }
+    private let regex = TCRegex()
     
     public init() {}
     
-    public func removeCleanExplicit(from input: String) -> String {
-        return filter(regex.cleanExplicit, from: input)
-    }
-    
-    public func removeFeature(from input: String) -> String {
-        return filter(regex.feature, from: input)
-    }
-    
-    public func removeRemastered(from input: String) -> String {
-        let expressions: [any RegexComponent] = [
-            regex.liveRemasteredRegex,
-            regex.bracketsRemasteredRegex,
-            regex.parenthesesRemasteredRegex,
-            regex.prefixRemasteredRegex,
-            regex.suffixRemasteredRegex,
-        ]
+    /// Applies the specified filters to the input string.
+    /// - Parameters:
+    ///   - input: The string to be filtered.
+    ///   - filters: The filters to apply. If not specified, all filters will be applied.
+    /// - Returns: The filtered string.
+    @MainActor
+    public func apply(_ input: String, filters: [TCFilter]? = nil) async -> String {
+        let filtersToApply = filters ?? TCFilter.allCases
+        var result = input
         
-        return filter(expressions, from: input)
-    }
-    
-    public func removeReissue(from input: String) -> String {
-        let expressions: [any RegexComponent] = [
-            regex.dashReissueRegex,
-            regex.bracketsReissueRegex,
-            regex.parenthesesReissueRegex
-        ]
+        for filter in filtersToApply {
+            for expression in filter.expressions {
+                result = result.replacing(expression, with: "")
+            }
+        }
         
-        return filter(expressions, from: input)
+        return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    public func removeRemix(from input: String) -> String {
-        let remixRegex = regex.remixRegex
-        return filter(remixRegex, from: input)
-    }
-    
-    public func removeSingle(from input: String) -> String {
-        let singleRegex = regex.singleRegex
-        return filter(singleRegex, from: input)
-    }
-    
-    public func removeEP(from input: String) -> String {
-        let epRegex = regex.epRegex
-        return filter(epRegex, from: input)
-    }
-    
-    public func removeBonusTrack(from input: String) -> String {
-        let bonusTrackRegex = regex.bonusTrackRegex
-        return filter(bonusTrackRegex, from: input)
-    }
-    
-    public func createFilter(with filters: TCFilter...) -> TCCustomFilter {
-        return TCCustomFilter.init(filters: filters)
+    /// Creates a custom filter using the provided filter builder.
+    /// - Parameter filters: A closure that builds the custom filter using the TagFilterBuilder.
+    /// - Returns: An array of TCFilter to be used with the `apply(_:filters:)` method.
+    public static func createCustomFilter(@TagFilterBuilder filters: () -> [TCFilter]) -> [TCFilter] {
+        filters()
     }
 }
