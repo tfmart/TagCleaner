@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TCFilter.swift
 //
 //
 //  Created by Tomas Martins on 05/12/23.
@@ -16,6 +16,11 @@ public enum TCFilter: Int8, CaseIterable {
     case single
     case ep
     case bonusTrack
+    case live
+    case parody
+    case version
+    case youtube
+    case additionalArtists
     
     private var regex: TCRegex {
         .init()
@@ -61,7 +66,27 @@ public enum TCFilter: Int8, CaseIterable {
             ]
         case .bonusTrack:
             [
-            
+                regex.bonusTrackRegex
+            ]
+        case .live:
+            [
+                regex.liveRegex
+            ]
+        case .parody:
+            [
+                regex.parodyRegex
+            ]
+        case .version:
+            [
+                regex.versionRegex
+            ]
+        case .youtube:
+            [
+                regex.youTubeRegex
+            ]
+        case .additionalArtists:
+            [
+                regex.additionalArtists
             ]
         }
     }
