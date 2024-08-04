@@ -32,8 +32,8 @@ public struct TagCleaner {
     ///   - input: The string to be filtered.
     ///   - filters: The filters to apply. If not specified, all filters will be applied.
     /// - Returns: The filtered string.
-    public func apply(_ input: String, filters: [TCFilter]? = nil) -> String {
-        let filtersToApply = filters ?? TCFilter.allCases
+    public func apply(_ input: String, filters: TCFilter...) -> String {
+        let filtersToApply = filters.isEmpty ? TCFilter.allCases : filters
         var result = input
         
         for filter in filtersToApply {
