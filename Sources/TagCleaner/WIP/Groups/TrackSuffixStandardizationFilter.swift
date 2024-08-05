@@ -23,12 +23,11 @@ public struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
             switch self {
             case .remix:
                 Regex {
-                    "-"
-                    OneOrMore(.whitespace)
+                    " - "
                     Capture {
                         OneOrMore(.any)
                     }
-                    OneOrMore(.whitespace)
+                    " "
                     ChoiceOf {
                         "Remix"
                         "Mix"
@@ -37,15 +36,19 @@ public struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
                 .ignoresCase()
             case .edit:
                 Regex {
-                    "-"
-                    OneOrMore(.whitespace)
+                    " - "
                     Capture {
                         OneOrMore(.any)
                     }
-                    OneOrMore(.whitespace)
-                    "Edit"
+                    " Edit"
                 }
                 .ignoresCase()
+            }
+        }
+        
+        public func replace(_ input: String) -> String {
+            input.replacing(regex) { match in
+                "(\(match.output) \(self == .remix ? "Remix" : "Edit"))"
             }
         }
     }

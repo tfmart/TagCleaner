@@ -124,6 +124,7 @@ public struct MediaSourceCleanupFilter: TCFilterApplierGroup {
                 }
             case .fullAlbum:
                 Regex {
+                    ZeroOrMore(" -")
                     " Full Album"
                 }
                 .anchorsMatchLineEndings()

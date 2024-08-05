@@ -9,7 +9,7 @@ import Foundation
 
 public struct TagCleaner {
     func apply(_ input: String, filter: any TCFilterApplier) -> String {
-        let result = input
-        return result.replacing(filter.regex, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let result = filter.replace(input)
+        return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

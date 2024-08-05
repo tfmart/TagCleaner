@@ -34,6 +34,12 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                             "("
                         }
                     })
+                    Optionally(
+                        Regex {
+                            ZeroOrMore(.digit)
+                            One(.whitespace)
+                        }
+                    )
                     ChoiceOf {
                         "Remaster"
                         "Remastered"
@@ -57,6 +63,12 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                             "("
                         }
                     })
+                    Optionally(
+                        Regex {
+                            ZeroOrMore(.digit)
+                            One(.whitespace)
+                        }
+                    )
                     ChoiceOf {
                         "Re-issue"
                         "Reissue"

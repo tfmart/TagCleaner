@@ -67,6 +67,23 @@ public struct TextNormalizationFilter: TCFilterApplierGroup {
                 }
             }
         }
+        
+        public func replace(_ input: String) -> String {
+            switch self {
+            case .htmlEntities:
+                return input.replacingOccurrences(of: "&amp;", with: "&")
+                    .replacingOccurrences(of: "&#039;", with: "'")
+            case .nonBreakingSpaces:
+                return input.replacingOccurrences(of: "\u{00A0}", with: " ")
+            case .smartQuotes:
+                return input.replacingOccurrences(of: "\u{201C}", with: "\"")
+                    .replacingOccurrences(of: "\u{201D}", with: "\"")
+                    .replacingOccurrences(of: "\u{2018}", with: "'")
+                    .replacingOccurrences(of: "\u{2019}", with: "'")
+            default:
+                return input.replacing(regex, with: "")
+            }
+        }
     }
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
