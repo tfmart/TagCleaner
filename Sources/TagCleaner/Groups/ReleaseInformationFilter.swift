@@ -48,6 +48,9 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
     /// A filter for removing a remix or edit credit from the release information
     public let remix: Subgroups = .remix
     
+    /// A filter for removing a bonus track tag from the release information
+    public let bonusTrack: Subgroups = .bonusTrack
+    
     /// The regex pattern used for filtering release information.
     public var regex: some RegexComponent {
         ChoiceOf {
@@ -58,6 +61,7 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
             Subgroups.single.regex
             Subgroups.ep.regex
             Subgroups.remix.regex
+            Subgroups.bonusTrack.regex
         }
     }
     
@@ -70,6 +74,7 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
         case single
         case ep
         case remix
+        case bonusTrack
         
         public var regex: some RegexComponent {
             switch self {
@@ -257,6 +262,27 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                     })
                 }
                 .ignoresCase()
+                .anchorsMatchLineEndings()
+                
+            case .bonusTrack:
+                Regex {
+                    ChoiceOf {
+                        Regex { " - " }
+                        Regex { " (" }
+                        Regex { " [" }
+                    }
+                    ChoiceOf {
+                        "Bonus Track"
+                        "Bonus"
+                    }
+                    ZeroOrMore(.anyNonNewline)
+                    Optionally(Regex {
+                        ChoiceOf {
+                            ")"
+                            "]"
+                        }
+                    })
+                }
                 .anchorsMatchLineEndings()
                 .ignoresCase()
             }

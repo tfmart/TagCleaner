@@ -161,6 +161,20 @@ final class TagCleanerTests: XCTestCase {
         }
     }
     
+    func testBonusTrackFilter() {
+        let testCases = [
+            ("Song Title - Bonus", "Song Title"),
+            ("Song Title - Bonus Track", "Song Title"),
+            ("Song Title (Bonus)", "Song Title"),
+            ("Song Title (Bonus Track)", "Song Title"),
+            ("Song Title [Bonus]", "Song Title"),
+            ("Song Title [Bonus Track]", "Song Title")
+        ]
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.bonusTrack), expected)
+        }
+    }
+    
     // MARK: - Parody and Cover Filter Tests
     
     func testParodyFilter() {
