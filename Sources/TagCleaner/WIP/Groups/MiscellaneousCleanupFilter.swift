@@ -15,11 +15,11 @@ public struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case specificSuffixes
         case leadingTrailingPunctuation
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .specificSuffixes:
                 Regex {
@@ -49,6 +49,6 @@ public struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var specificSuffixes: Subgroups = .specificSuffixes
-    static var leadingTrailingPunctuation: Subgroups = .leadingTrailingPunctuation
+    public let specificSuffixes: Subgroups = .specificSuffixes
+    public let leadingTrailingPunctuation: Subgroups = .leadingTrailingPunctuation
 }

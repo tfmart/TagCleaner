@@ -19,7 +19,7 @@ public struct TextNormalizationFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case htmlEntities
         case zeroWidthCharacters
         case nonBreakingSpaces
@@ -27,7 +27,7 @@ public struct TextNormalizationFilter: TCFilterApplierGroup {
         case whitespace
         case multipleSpaces
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .htmlEntities:
                 Regex {
@@ -71,10 +71,10 @@ public struct TextNormalizationFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var htmlEntities: Subgroups = .htmlEntities
-    static var zeroWidthCharacters: Subgroups = .zeroWidthCharacters
-    static var nonBreakingSpaces: Subgroups = .nonBreakingSpaces
-    static var smartQuotes: Subgroups = .smartQuotes
-    static var whitespace: Subgroups = .whitespace
-    static var multipleSpaces: Subgroups = .multipleSpaces
+    public let htmlEntities: Subgroups = .htmlEntities
+    public let zeroWidthCharacters: Subgroups = .zeroWidthCharacters
+    public let nonBreakingSpaces: Subgroups = .nonBreakingSpaces
+    public let smartQuotes: Subgroups = .smartQuotes
+    public let whitespace: Subgroups = .whitespace
+    public let multipleSpaces: Subgroups = .multipleSpaces
 }

@@ -18,13 +18,13 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case remaster
         case reissue
         case version
         case anniversary
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .remaster:
                 Regex {
@@ -124,8 +124,8 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var remaster: Subgroups = .remaster
-    static var reissue: Subgroups = .reissue
-    static var version: Subgroups = .version
-    static var anniversary: Subgroups = .anniversary
+    public let remaster: Subgroups = .remaster
+    public let reissue: Subgroups = .reissue
+    public let version: Subgroups = .version
+    public let anniversary: Subgroups = .anniversary
 }

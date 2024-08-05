@@ -15,11 +15,11 @@ public struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case remix
         case edit
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .remix:
                 Regex {
@@ -52,6 +52,6 @@ public struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var remix: Subgroups = .remix
-    static var edit: Subgroups = .edit
+    public let remix: Subgroups = .remix
+    public let edit: Subgroups = .edit
 }

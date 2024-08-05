@@ -15,11 +15,11 @@ public struct ArtistInformationFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case featuredArtists
         case additionalArtists
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .featuredArtists:
                 Regex {
@@ -63,7 +63,7 @@ public struct ArtistInformationFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var featuredArtists: Subgroups = .featuredArtists
-    static var additionalArtists: Subgroups = .additionalArtists
+    public let featuredArtists: Subgroups = .featuredArtists
+    public let additionalArtists: Subgroups = .additionalArtists
 }
 

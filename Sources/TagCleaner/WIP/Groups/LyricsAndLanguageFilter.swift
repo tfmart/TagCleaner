@@ -15,11 +15,11 @@ public struct LyricsAndLanguageFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case lyricsIndicators
         case languageSubtitles
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .lyricsIndicators:
                 Regex {
@@ -45,6 +45,6 @@ public struct LyricsAndLanguageFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var lyricsIndicators: Subgroups = .lyricsIndicators
-    static var languageSubtitles: Subgroups = .languageSubtitles
+    public let lyricsIndicators: Subgroups = .lyricsIndicators
+    public let languageSubtitles: Subgroups = .languageSubtitles
 }

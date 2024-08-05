@@ -15,11 +15,11 @@ public struct FormattingStandardizationFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case featuringArtistFormat
         case parenthesesBrackets
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .featuringArtistFormat:
                 Regex {
@@ -60,6 +60,6 @@ public struct FormattingStandardizationFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var featuringArtistFormat: Subgroups = .featuringArtistFormat
-    static var parenthesesBrackets: Subgroups = .parenthesesBrackets
+    public let featuringArtistFormat: Subgroups = .featuringArtistFormat
+    public let parenthesesBrackets: Subgroups = .parenthesesBrackets
 }

@@ -15,11 +15,11 @@ public struct ContentLabelFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case explicit
         case clean
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .explicit:
                 Regex {
@@ -53,6 +53,6 @@ public struct ContentLabelFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var explicit: Subgroups = .explicit
-    static var clean: Subgroups = .clean
+    public let explicit: Subgroups = .explicit
+    public let clean: Subgroups = .clean
 }

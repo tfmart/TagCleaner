@@ -1,122 +1,377 @@
-//import XCTest
-//import RegexBuilder
-//@testable import TagCleaner
-//
-//final class TagCleanerTests: XCTestCase {
-//    var tagCleaner: TagCleaner = .init()
-//    
-//    func testCleanExplicitFilter() {
-//        let explicitInput = "One More Night (Explicit)"
-//        let filteredOutput = tagCleaner.removeCleanExplicit(from: explicitInput)
-//        
-//        XCTAssertNotEqual(explicitInput, filteredOutput)
-//        XCTAssertEqual(filteredOutput, "One More Night")
-//    }
-//    
-//    func testCleanFilter() {
-//        let cleanInput = "One More Night (Clean)"
-//        let filteredOutput = tagCleaner.removeCleanExplicit(from: cleanInput)
-//        
-//        XCTAssertNotEqual(cleanInput, filteredOutput)
-//        XCTAssertEqual(filteredOutput, "One More Night")
-//    }
-//    
-//    func testFeatFilter() {
-//        let inputWithParentheses = "After the Storm (feat. Tyler, The Creator & Bootsy Collins)"
-//        let inputWithBrackets = "After the Storm [feat. Tyler, The Creator & Bootsy Collins]"
-//        let inputWithoutSeparator = "After the Storm feat. Tyler, The Creator & Bootsy Collins"
-//        
-//        let output1: String = tagCleaner.removeFeature(from: inputWithParentheses)
-//        let output2: String = tagCleaner.removeFeature(from: inputWithBrackets)
-//        let output3: String = tagCleaner.removeFeature(from: inputWithoutSeparator)
-//        
-//        XCTAssertEqual(output1, "After the Storm")
-//        XCTAssertEqual(output2, "After the Storm")
-//        XCTAssertEqual(output3, "After the Storm")
-//    }
-//    
-//    func testRemasteredFilter() {
-//        let inputData = [
-//            "Track Title",
-//            "Track Title - Remastered",
-//            "Track Title - Remastered 2015",
-//            "Track Title (Remastered 2009)",
-//            "Track Title (Remaster 2009)",
-//            "Track Title [2011 - Remaster]",
-//            "Track Title (2011 - Remaster)",
-//            "Track Title (2011 Remaster)",
-//            "Track Title - 2011 - Remaster",
-//            "Track Title - 2006 Remaster",
-//            "Track Title - 2006 Remastered",
-//            "Track Title - 2001 Digital Remaster",
-//            "Track Title - 2011 Remastered Version",
-//            "Track Title (Live / Remastered)",
-//            "Track Title - Live / Remastered",
-//            "Track Title (Remastered)",
-//            "Track Title [Remastered]",
-//            "Track Title (Deluxe Remaster)",
-//            "Track Title [Deluxe Remaster]",
-//            "Track Title (Remastered Deluxe Box Set)",
-//            "Track Title [Remastered Deluxe Box Set]",
-//            "Track Title (2014 Remastered Version)",
-//            "Track Title [2014 Remastered Version]",
-//            "Track Title (2009 Re-Mastered Digital Version)",
-//            "Track Title (2009 Remastered Digital Version)"
-//        ]
-//
-//
-//        for input in inputData {
-//            let output = tagCleaner.removeRemastered(from: input)
-//            XCTAssertEqual(output, "Track Title", "Failed on case: \(input)")
-//        }
-//    }
-//    
-//    func testReissueFilter() {
-//        let inputWithParentheses = "Album Title Re-issue"
-//        let inputWithBrackets = "Album Title [Whatever Re-issue Whatever]"
-//        let inputWithDash = "Album Title (Whatever Re-issue Whatever)"
-//        
-//        let output1: String = tagCleaner.removeReissue(from: inputWithParentheses)
-//        let output2: String = tagCleaner.removeReissue(from: inputWithBrackets)
-//        let output3: String = tagCleaner.removeReissue(from: inputWithDash)
-//        
-//        let expectation = "Album Title"
-//        
-//        XCTAssertEqual(output1, expectation)
-//        XCTAssertEqual(output2, expectation)
-//        XCTAssertEqual(output3, expectation)
-//    }
-//    
-//    func testRemix() {
-//        let inputWithoutName = "Die For You (Remix)"
-//        let inputWithName = "Juice (Breakbot Remix)"
-//        let inputWithEdit = "Head Over Heels (Hughes 7\" Edit)"
-//        
-//        let output1 = tagCleaner.removeRemix(from: inputWithoutName)
-//        let output2 = tagCleaner.removeRemix(from: inputWithName)
-//        let output3 = tagCleaner.removeRemix(from: inputWithEdit)
-//        
-//        XCTAssertEqual("Die For You", output1)
-//        XCTAssertEqual("Juice", output2)
-//        XCTAssertEqual("Head Over Heels", output3)
-//    }
-//    
-//    func testSingle() {
-//        let inputWithSingle = "So Nice - Single"
-//        let output = tagCleaner.removeSingle(from: inputWithSingle)
-//        
-//        XCTAssertEqual("So Nice", output)
-//    }
-//    
-//    func testEP() {
-//        let inputWithEP = "Elliot - EP"
-//        let output = tagCleaner.removeEP(from: inputWithEP)
-//        XCTAssertEqual("Elliot", output)
-//    }
-//    
-//    func testBonusTrack () {
-//        let inputWithEP = "The Air That I Breathe (Bonus Track)"
-//        let output = tagCleaner.removeBonusTrack(from: inputWithEP)
-//        XCTAssertEqual("The Air That I Breathe", output)
-//    }
-//}
+import XCTest
+@testable import TagCleaner
+
+final class TagCleanerTests: XCTestCase {
+    
+    let cleaner = TagCleaner()
+
+    // MARK: - Artist Information Filter Tests
+    
+    func testFeaturedArtists() {
+        let testCases = [
+            ("Artist A feat. Artist B", "Artist A"),
+            ("Artist A feat. Artist B, Artist C", "Artist A"),
+            ("Artist A feat. Artist B, Artist C & Artist D", "Artist A"),
+            ("Artist A", "Artist A"),
+            ("Artist A [feat. Artist B]", "Artist A"),
+            ("Artist A (feat. Artist B)", "Artist A")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.artistInformation.featuredArtists), expected)
+        }
+    }
+    
+    func testAdditionalArtists() {
+        let testCases = [
+            ("Artist A x Artist B", "Artist A"),
+            ("Artist A & Artist B", "Artist A")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.artistInformation.additionalArtists), expected)
+        }
+    }
+    
+    // MARK: - Content Label Filter Tests
+    
+    func testExplicitLabel() {
+        let testCases = [
+            ("Track [Explicit]", "Track"),
+            ("Track (Explicit)", "Track")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.contentLabel.explicit), expected)
+        }
+    }
+    
+    func testCleanLabel() {
+        let testCases = [
+            ("Track [Clean]", "Track"),
+            ("Track (Clean)", "Track")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.contentLabel.clean), expected)
+        }
+    }
+    
+    // MARK: - Performance Type Filter Tests
+    
+    func testLivePerformance() {
+        let testCases = [
+            ("Track Title - Live", "Track Title"),
+            ("Track Title - Live @ Moon", "Track Title"),
+            ("Track Title (Live)", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.performanceType.live), expected)
+        }
+    }
+    
+    func testAcousticPerformance() {
+        let testCases = [
+            ("Track Title - Acoustic", "Track Title"),
+            ("Track Title (Acoustic)", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.performanceType.acoustic), expected)
+        }
+    }
+    
+    // MARK: - Release Information Filter Tests
+    
+    func testRemasterFilter() {
+        let testCases = [
+            ("Track Title - Remastered", "Track Title"),
+            ("Track Title (2015 Remaster)", "Track Title"),
+            ("Track Title [Remastered]", "Track Title"),
+            ("Track Title (Remastered 2009)", "Track Title"),
+            ("Track Title - 2011 Remaster", "Track Title"),
+            ("Track Title (Deluxe Remaster)", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.remaster), expected)
+        }
+    }
+    
+    func testReissueFilter() {
+        let testCases = [
+            ("Album Title Re-issue", "Album Title"),
+            ("Album Title (Reissue)", "Album Title"),
+            ("Album Title [Re-issue + Bonus]", "Album Title"),
+            ("Album Title (2005 Re-issue)", "Album Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.reissue), expected)
+        }
+    }
+    
+    func testVersionFilter() {
+        let testCases = [
+            ("Track Title (Album Version)", "Track Title"),
+            ("Track Title [Single Version]", "Track Title"),
+            ("Track Title (Deluxe Edition)", "Track Title"),
+            ("Track Title - Mono Version", "Track Title"),
+            ("Track Title - Stereo Version", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.version), expected)
+        }
+    }
+    
+    func testAnniversaryFilter() {
+        let testCases = [
+            ("Album Title (25th Anniversary)", "Album Title"),
+            ("Album Title [30th Anniversary Remaster]", "Album Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.anniversary), expected)
+        }
+    }
+    
+    // MARK: - Track Suffix Standardization Filter Tests
+    
+    func testRemixFilter() {
+        let testCases = [
+            ("Track Title - Artist Remix", "Track Title (Artist Remix)"),
+            ("Track Title - Remix", "Track Title (Remix)"),
+            ("Track Title - Group X mix", "Track Title (Group X mix)")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.trackSuffixStandardization.remix), expected)
+        }
+    }
+    
+    func testEditFilter() {
+        let testCases = [
+            ("Track Title - Group X edit", "Track Title (Group X edit)"),
+            ("Track Title - Edit", "Track Title (Edit)")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.trackSuffixStandardization.edit), expected)
+        }
+    }
+    
+    // MARK: - Parody and Cover Filter Tests
+    
+    func testParodyFilter() {
+        let testCases = [
+            ("Party In the CIA (Parody of \"Party In The U.S.A.\" by Miley Cyrus)", "Party In the CIA"),
+            ("White & Nerdy (Parody of \"Ridin'\" by Chamillionaire feat. Krayzie Bone)", "White & Nerdy")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.parodyAndCover.parody), expected)
+        }
+    }
+    
+    func testCoverFilter() {
+        let testCases = [
+            ("Hallelujah (Cover of \"Hallelujah\" by Leonard Cohen)", "Hallelujah"),
+            ("All Along the Watchtower (Cover of \"All Along the Watchtower\" by Bob Dylan)", "All Along the Watchtower")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.parodyAndCover.cover), expected)
+        }
+    }
+    
+    // MARK: - Media Source Cleanup Filter Tests
+    
+    func testVideoIndicatorsFilter() {
+        let testCases = [
+            ("Track Title (Official Video)", "Track Title"),
+            ("Track Title - Music Video", "Track Title"),
+            ("Track Title [Video]", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.mediaSourceCleanup.videoIndicators), expected)
+        }
+    }
+    
+    func testAudioIndicatorsFilter() {
+        let testCases = [
+            ("Track Title (Official Audio)", "Track Title"),
+            ("Track Title - Audio", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.mediaSourceCleanup.audioIndicators), expected)
+        }
+    }
+    
+    func testFileExtensionsFilter() {
+        let testCases = [
+            ("Track Title.mp3", "Track Title"),
+            ("Track Title.wav", "Track Title"),
+            ("Track Title.flac", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.mediaSourceCleanup.fileExtensions), expected)
+        }
+    }
+    
+    func testQualityIndicatorsFilter() {
+        let testCases = [
+            ("Track Title HD", "Track Title"),
+            ("Track Title (HQ)", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.mediaSourceCleanup.qualityIndicators), expected)
+        }
+    }
+    
+    func testDateYearInformationFilter() {
+        let testCases = [
+            ("Track Title (2021)", "Track Title"),
+            ("Track Title [1999]", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.mediaSourceCleanup.dateYearInformation), expected)
+        }
+    }
+    
+    func testFullAlbumFilter() {
+        let testCases = [
+            ("Album Title Full Album", "Album Title"),
+            ("Artist Name - Full Album", "Artist Name")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.mediaSourceCleanup.fullAlbum), expected)
+        }
+    }
+    
+    // MARK: - Lyrics and Language Filter Tests
+    
+    func testLyricsIndicatorsFilter() {
+        let testCases = [
+            ("Track Title (Lyric Video)", "Track Title"),
+            ("Track Title (With Lyrics)", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.lyricsAndLanguage.lyricsIndicators), expected)
+        }
+    }
+    
+    func testLanguageSubtitlesFilter() {
+        let testCases = [
+            ("Track Title Sub Español", "Track Title"),
+            ("Track Title (Letra)", "Track Title"),
+            ("Track Title (En vivo)", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.lyricsAndLanguage.languageSubtitles), expected)
+        }
+    }
+    
+    // MARK: - Text Normalization Filter Tests
+    
+    func testHtmlEntitiesFilter() {
+        let testCases = [
+            ("Artist 1 &amp; Artist 2", "Artist 1 & Artist 2"),
+            ("Track Title &#039;", "Track Title '")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.textNormalization.htmlEntities), expected)
+        }
+    }
+    
+    func testZeroWidthCharactersFilter() {
+        let testCases = [
+            ("Track\u{200B}Title", "TrackTitle"),
+            ("\u{FEFF}Track Title", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.textNormalization.zeroWidthCharacters), expected)
+        }
+    }
+    
+    func testNonBreakingSpacesFilter() {
+        let testCases = [
+            ("Track\u{00A0}Title", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.textNormalization.nonBreakingSpaces), expected)
+        }
+    }
+    
+    func testSmartQuotesFilter() {
+        let testCases = [
+            ("Track \u{201C}Title\u{201D}", "Track \"Title\""),
+            ("Track \u{2018}Title\u{2019}", "Track 'Title'")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.textNormalization.smartQuotes), expected)
+        }
+    }
+    
+    // MARK: - Formatting Standardization Filter Tests
+    
+    func testFeaturingArtistFormatFilter() {
+        let testCases = [
+            ("Track (feat. Artist)", "Track"),
+            ("Track [ft. Artist]", "Track")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.formattingStandardization.featuringArtistFormat), expected)
+        }
+    }
+    
+    func testParenthesesBracketsFilter() {
+        let testCases = [
+            ("Track (Additional Info)", "Track"),
+            ("Track [Additional Info]", "Track")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.formattingStandardization.parenthesesBrackets), expected)
+        }
+    }
+    
+    // MARK: - Miscellaneous Cleanup Filter Tests
+    
+    func testSpecificSuffixesFilter() {
+        let testCases = [
+            ("Track (Album Track)", "Track"),
+            ("Track (Single)", "Track"),
+            ("Track (Album)", "Track")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.miscellaneousCleanup.specificSuffixes), expected)
+        }
+    }
+    
+    func testLeadingTrailingPunctuationFilter() {
+        let testCases = [
+            ("...Track Title", "Track Title"),
+            ("Track Title...", "Track Title")
+        ]
+        
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.miscellaneousCleanup.leadingTrailingPunctuation), expected)
+        }
+    }
+}

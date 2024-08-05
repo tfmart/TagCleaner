@@ -15,11 +15,11 @@ public struct PerformanceTypeFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case live
         case acoustic
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .live:
                 Regex {
@@ -59,6 +59,6 @@ public struct PerformanceTypeFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var live: Subgroups = .live
-    static var acoustic: Subgroups = .acoustic
+    public let live: Subgroups = .live
+    public let acoustic: Subgroups = .acoustic
 }

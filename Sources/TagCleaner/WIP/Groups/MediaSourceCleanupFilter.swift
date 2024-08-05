@@ -20,7 +20,7 @@ public struct MediaSourceCleanupFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case videoIndicators
         case audioIndicators
         case fileExtensions
@@ -28,7 +28,7 @@ public struct MediaSourceCleanupFilter: TCFilterApplierGroup {
         case dateYearInformation
         case fullAlbum
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .videoIndicators:
                 Regex {
@@ -134,10 +134,10 @@ public struct MediaSourceCleanupFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var videoIndicators: Subgroups = .videoIndicators
-    static var audioIndicators: Subgroups = .audioIndicators
-    static var fileExtensions: Subgroups = .fileExtensions
-    static var qualityIndicators: Subgroups = .qualityIndicators
-    static var dateYearInformation: Subgroups = .dateYearInformation
-    static var fullAlbum: Subgroups = .fullAlbum
+    public let videoIndicators: Subgroups = .videoIndicators
+    public let audioIndicators: Subgroups = .audioIndicators
+    public let fileExtensions: Subgroups = .fileExtensions
+    public let qualityIndicators: Subgroups = .qualityIndicators
+    public let dateYearInformation: Subgroups = .dateYearInformation
+    public let fullAlbum: Subgroups = .fullAlbum
 }

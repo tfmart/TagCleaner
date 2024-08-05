@@ -15,11 +15,11 @@ public struct ParodyAndCoverFilter: TCFilterApplierGroup {
         }
     }
     
-    enum Subgroups: TCFilterApplier, CaseIterable {
+    public enum Subgroups: TCFilterApplier, CaseIterable {
         case parody
         case cover
         
-        var regex: some RegexComponent {
+        public var regex: some RegexComponent {
             switch self {
             case .parody:
                 Regex {
@@ -43,6 +43,6 @@ public struct ParodyAndCoverFilter: TCFilterApplierGroup {
     
     public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
-    static var parody: Subgroups = .parody
-    static var cover: Subgroups = .cover
+    public let parody: Subgroups = .parody
+    public let cover: Subgroups = .cover
 }
