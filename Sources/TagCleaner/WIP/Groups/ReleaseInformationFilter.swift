@@ -32,11 +32,18 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                         ChoiceOf {
                             "["
                             "("
+                            "- "
                         }
                     })
                     Optionally(
                         Regex {
                             ZeroOrMore(.digit)
+                            One(.whitespace)
+                        }
+                    )
+                    Optionally(
+                        Regex {
+                            ZeroOrMore(.word)
                             One(.whitespace)
                         }
                     )
@@ -78,6 +85,7 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                         ChoiceOf {
                             "]"
                             ")"
+                            "- "
                         }
                     })
                 }
@@ -88,8 +96,21 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                         ChoiceOf {
                             "["
                             "("
+                            "- "
                         }
                     })
+                    Optionally(
+                        Regex {
+                            ZeroOrMore(.digit)
+                            One(.whitespace)
+                        }
+                    )
+                    Optionally(
+                        Regex {
+                            ZeroOrMore(.word)
+                            One(.whitespace)
+                        }
+                    )
                     ChoiceOf {
                         "Version"
                         "Edition"

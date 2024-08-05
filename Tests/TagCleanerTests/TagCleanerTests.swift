@@ -137,31 +137,6 @@ final class TagCleanerTests: XCTestCase {
         }
     }
     
-    // MARK: - Track Suffix Standardization Filter Tests
-    
-    func testRemixFilter() {
-        let testCases = [
-            ("Track Title - Artist Remix", "Track Title (Artist Remix)"),
-            ("Track Title - Remix", "Track Title (Remix)"),
-            ("Track Title - Group X mix", "Track Title (Group X mix)")
-        ]
-        
-        for (input, expected) in testCases {
-            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.trackSuffixStandardization.remix), expected)
-        }
-    }
-    
-    func testEditFilter() {
-        let testCases = [
-            ("Track Title - Group X edit", "Track Title (Group X edit)"),
-            ("Track Title - Edit", "Track Title (Edit)")
-        ]
-        
-        for (input, expected) in testCases {
-            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.trackSuffixStandardization.edit), expected)
-        }
-    }
-    
     // MARK: - Parody and Cover Filter Tests
     
     func testParodyFilter() {

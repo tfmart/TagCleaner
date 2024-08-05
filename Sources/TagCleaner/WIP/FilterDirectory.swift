@@ -13,7 +13,6 @@ public struct FilterDirectory {
     public static var performanceType: PerformanceTypeFilter = .init()
     public static var contentLabel: ContentLabelFilter = .init()
     public static var artistInformation: ArtistInformationFilter = .init()
-    public static var trackSuffixStandardization: TrackSuffixStandardizationFilter = .init()
     public static var parodyAndCover: ParodyAndCoverFilter = .init()
     public static var mediaSourceCleanup: MediaSourceCleanupFilter = .init()
     public static var lyricsAndLanguage: LyricsAndLanguageFilter = .init()
