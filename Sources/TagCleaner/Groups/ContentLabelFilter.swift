@@ -7,6 +7,10 @@
 
 import RegexBuilder
 
+/// A filter for removing content labels from titles.
+/// This filter group includes subfilters for:
+/// - Explicit content labels (e.g., "[Explicit]", "(Explicit)")
+/// - Clean content labels (e.g., "[Clean]", "(Clean)")
 public struct ContentLabelFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {

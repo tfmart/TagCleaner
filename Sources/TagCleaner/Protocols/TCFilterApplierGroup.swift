@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// A protocol that defines a group of filter appliers.
 public protocol TCFilterApplierGroup: TCFilterApplier {
+    /// An array of subgroup filter appliers.
     var subgroups: [any TCFilterApplier] { get }
 }

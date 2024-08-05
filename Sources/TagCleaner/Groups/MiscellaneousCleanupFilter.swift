@@ -7,6 +7,12 @@
 
 import RegexBuilder
 
+import RegexBuilder
+
+/// A filter for miscellaneous cleanup tasks in titles.
+/// This filter group includes subfilters for:
+/// - Specific suffixes (e.g., "(Album Track)", "(Single)")
+/// - Leading and trailing punctuation (e.g., removing extra periods at start/end)
 public struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {

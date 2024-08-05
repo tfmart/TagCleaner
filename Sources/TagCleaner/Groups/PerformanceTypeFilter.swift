@@ -7,6 +7,10 @@
 
 import RegexBuilder
 
+/// A filter for removing performance type indicators from titles.
+/// This filter group includes subfilters for:
+/// - Live performances (e.g., "Live at Wembley", "(Live)")
+/// - Acoustic performances (e.g., "Acoustic Version", "(Acoustic)")
 public struct PerformanceTypeFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {

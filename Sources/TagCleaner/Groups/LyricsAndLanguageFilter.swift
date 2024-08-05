@@ -7,6 +7,12 @@
 
 import RegexBuilder
 
+import RegexBuilder
+
+/// A filter for removing lyrics and language indicators from titles.
+/// This filter group includes subfilters for:
+/// - Lyrics indicators (e.g., "(Lyric Video)", "(With Lyrics)")
+/// - Language subtitles (e.g., "Sub Español", "(Letra)")
 public struct LyricsAndLanguageFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {

@@ -7,6 +7,14 @@
 
 import RegexBuilder
 
+/// A filter for normalizing text in titles.
+/// This filter group includes subfilters for:
+/// - HTML entities (e.g., "&amp;" to "&")
+/// - Zero-width characters (e.g., removing invisible characters)
+/// - Non-breaking spaces (e.g., replacing with regular spaces)
+/// - Smart quotes (e.g., replacing with straight quotes)
+/// - Whitespace normalization (e.g., trimming excess spaces)
+/// - Multiple spaces (e.g., reducing to single spaces)
 public struct TextNormalizationFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {

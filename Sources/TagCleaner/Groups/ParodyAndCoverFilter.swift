@@ -7,6 +7,10 @@
 
 import RegexBuilder
 
+/// A filter for removing parody and cover information from titles.
+/// This filter group includes subfilters for:
+/// - Parody information (e.g., "(Parody of "Original Song" by Original Artist)")
+/// - Cover information (e.g., "(Cover of "Original Song" by Original Artist)")
 public struct ParodyAndCoverFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {

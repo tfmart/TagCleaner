@@ -7,6 +7,10 @@
 
 import RegexBuilder
 
+/// A filter for cleaning up artist information in titles.
+/// This filter group includes subfilters for:
+/// - Featured artists (e.g., "feat. Artist B", "(feat. Artist C)")
+/// - Additional artists (e.g., "& Artist D", "x Artist E")
 public struct ArtistInformationFilter: TCFilterApplierGroup {
     public var regex: some RegexComponent {
         ChoiceOf {
@@ -66,4 +70,3 @@ public struct ArtistInformationFilter: TCFilterApplierGroup {
     public let featuredArtists: Subgroups = .featuredArtists
     public let additionalArtists: Subgroups = .additionalArtists
 }
-
