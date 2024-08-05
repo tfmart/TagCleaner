@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.specificSuffixes.regex
             Subgroups.leadingTrailingPunctuation.regex
@@ -47,7 +47,7 @@ struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var specificSuffixes: Subgroups = .specificSuffixes
     static var leadingTrailingPunctuation: Subgroups = .leadingTrailingPunctuation

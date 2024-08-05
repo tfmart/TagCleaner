@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct ParodyAndCoverFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct ParodyAndCoverFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.parody.regex
             Subgroups.cover.regex
@@ -41,7 +41,7 @@ struct ParodyAndCoverFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var parody: Subgroups = .parody
     static var cover: Subgroups = .cover

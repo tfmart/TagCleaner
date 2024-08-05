@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.remix.regex
             Subgroups.edit.regex
@@ -50,7 +50,7 @@ struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var remix: Subgroups = .remix
     static var edit: Subgroups = .edit

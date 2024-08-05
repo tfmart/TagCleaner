@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TCFilterApplier {
+public protocol TCFilterApplier {
     associatedtype RegexFilter: RegexComponent
     var regex: RegexFilter { get }
 }

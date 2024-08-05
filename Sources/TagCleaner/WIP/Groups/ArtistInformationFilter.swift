@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct ArtistInformationFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct ArtistInformationFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.featuredArtists.regex
             Subgroups.additionalArtists.regex
@@ -61,7 +61,7 @@ struct ArtistInformationFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var featuredArtists: Subgroups = .featuredArtists
     static var additionalArtists: Subgroups = .additionalArtists

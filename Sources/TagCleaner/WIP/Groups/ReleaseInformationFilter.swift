@@ -8,8 +8,8 @@
 import Foundation
 import RegexBuilder
 
-struct ReleaseInformationFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct ReleaseInformationFilter: TCFilterApplierGroup {
+    public  var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.reissue.regex
             Subgroups.reissue.regex
@@ -122,7 +122,7 @@ struct ReleaseInformationFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var remaster: Subgroups = .remaster
     static var reissue: Subgroups = .reissue

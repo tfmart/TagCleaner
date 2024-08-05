@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct ContentLabelFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct ContentLabelFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.explicit.regex
             Subgroups.clean.regex
@@ -51,7 +51,7 @@ struct ContentLabelFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var explicit: Subgroups = .explicit
     static var clean: Subgroups = .clean

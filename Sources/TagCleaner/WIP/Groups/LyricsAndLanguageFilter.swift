@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct LyricsAndLanguageFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct LyricsAndLanguageFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.lyricsIndicators.regex
             Subgroups.languageSubtitles.regex
@@ -43,7 +43,7 @@ struct LyricsAndLanguageFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var lyricsIndicators: Subgroups = .lyricsIndicators
     static var languageSubtitles: Subgroups = .languageSubtitles

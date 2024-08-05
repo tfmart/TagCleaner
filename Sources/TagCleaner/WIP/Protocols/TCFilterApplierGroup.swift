@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol TCFilterApplierGroup: TCFilterApplier {
+public protocol TCFilterApplierGroup: TCFilterApplier {
     var subgroups: [any TCFilterApplier] { get }
 }

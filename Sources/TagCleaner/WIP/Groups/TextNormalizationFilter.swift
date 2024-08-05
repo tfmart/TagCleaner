@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct TextNormalizationFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct TextNormalizationFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.htmlEntities.regex
             Subgroups.zeroWidthCharacters.regex
@@ -69,7 +69,7 @@ struct TextNormalizationFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var htmlEntities: Subgroups = .htmlEntities
     static var zeroWidthCharacters: Subgroups = .zeroWidthCharacters

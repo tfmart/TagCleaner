@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct PerformanceTypeFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct PerformanceTypeFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.live.regex
             Subgroups.acoustic.regex
@@ -57,7 +57,7 @@ struct PerformanceTypeFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var live: Subgroups = .live
     static var acoustic: Subgroups = .acoustic

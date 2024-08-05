@@ -8,8 +8,8 @@
 
 import RegexBuilder
 
-struct MediaSourceCleanupFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct MediaSourceCleanupFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.videoIndicators.regex
             Subgroups.audioIndicators.regex
@@ -132,7 +132,7 @@ struct MediaSourceCleanupFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var videoIndicators: Subgroups = .videoIndicators
     static var audioIndicators: Subgroups = .audioIndicators

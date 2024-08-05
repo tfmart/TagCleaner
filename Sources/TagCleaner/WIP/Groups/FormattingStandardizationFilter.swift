@@ -7,8 +7,8 @@
 
 import RegexBuilder
 
-struct FormattingStandardizationFilter: TCFilterApplierGroup {
-    var regex: some RegexComponent {
+public struct FormattingStandardizationFilter: TCFilterApplierGroup {
+    public var regex: some RegexComponent {
         ChoiceOf {
             Subgroups.featuringArtistFormat.regex
             Subgroups.parenthesesBrackets.regex
@@ -58,7 +58,7 @@ struct FormattingStandardizationFilter: TCFilterApplierGroup {
         }
     }
     
-    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
+    public var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var featuringArtistFormat: Subgroups = .featuringArtistFormat
     static var parenthesesBrackets: Subgroups = .parenthesesBrackets
