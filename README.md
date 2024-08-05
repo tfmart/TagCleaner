@@ -79,7 +79,7 @@ print(song.title) // Outputs: "Song Title"
 - macOS 13.0+
 - watchOS 9.0+
 - tvOS 16.0+
-- Swift 5.9+
+- Swift 5.7+
 
 ## License
 
