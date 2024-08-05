@@ -9,11 +9,19 @@ import Foundation
 import RegexBuilder
 
 /// A filter for cleaning release information from titles.
+///
 /// This filter group includes subfilters for:
 /// - Remastered versions (e.g., "Remastered", "2021 Remaster")
 /// - Reissues (e.g., "2020 Re-issue")
 /// - Version information (e.g., "Deluxe Version", "Extended Edition")
 /// - Anniversary editions (e.g., "20th Anniversary Edition")
+/// - EP indicators (e.g., "- EP", "(EP)")
+/// - Single indicators (e.g., "- Single", "[Single]")
+/// - Remix indicators (e.g., "Remix", "RMX")
+/// - Edit indicators (e.g., "Edit", "Edited Version")
+///
+/// Use this filter to remove common release-related suffixes and parentheticals
+/// from song or album titles.
 public struct ReleaseInformationFilter: TCFilterApplierGroup {
     
     /// The subgroups of release information filters.
