@@ -9,13 +9,13 @@ TagCleaner is a Swift package that provides a robust solution for cleaning and s
 - Easy to use API
 - Support for iOS, macOS, watchOS, and tvOS
 
+## Inspiration
+
+TagCleaner is inspired by and based on the work of [Web Scrobbler's metadata-filter](https://github.com/web-scrobbler/metadata-filter). It's essentially a Swift port of this JavaScript library, adapted for use in Apple's ecosystem.
+
 ## How It Works
 
-TagCleaner is an experimental project that leverages Swift's RegexBuilder to clean music metadata. It's inspired by and based on the work of Web Scrobbler's metadata-filter (https://github.com/web-scrobbler/metadata-filter), adapting similar concepts to a native Swift implementation.
-
-The package uses a combination of RegexBuilder patterns and Swift's string manipulation capabilities to clean music metadata. This approach allows for powerful and flexible text processing while taking advantage of Swift's type-safe regex creation.
-
-TagCleaner includes filters for:
+TagCleaner uses a combination of RegexBuilder patterns and Swift's string manipulation capabilities to clean music metadata. It includes filters for:
 
 - Explicit/Clean labels
 - Featured artists
@@ -28,13 +28,11 @@ TagCleaner includes filters for:
 - Parodies
 - Version information
 - YouTube-specific tags
-- Additional artists
-
-You can apply all filters at once or selectively use specific filters as needed. The experimental nature of this project means it's continuously evolving, and we welcome feedback and contributions to improve its functionality and performance.
+- And more!
 
 ## Installation
 
-TagCleaner can be installed using Swift Package Manager.
+### Swift Package Manager
 
 1. In Xcode, select "File" → "Swift Packages" → "Add Package Dependency"
 2. Enter the repository URL: `https://github.com/yourusername/TagCleaner.git`
@@ -44,7 +42,7 @@ Alternatively, you can add it to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/tfmart/TagCleaner.git", from: "1.0.0")
+    .package(url: "https://github.com/yourusername/TagCleaner.git", from: "1.0.0")
 ]
 ```
 
@@ -56,15 +54,23 @@ Here's a basic example of how to use TagCleaner:
 import TagCleaner
 
 let cleaner = TagCleaner()
-let cleanedTitle = cleaner.apply("Song Title (Remastered 2021) [feat. Another Artist]")
+let cleanedTitle = cleaner.apply("Song Title (Remastered 2021) [feat. Another Artist]", filter: FilterDirectory.releaseInformation)
 print(cleanedTitle) // Outputs: "Song Title"
 ```
 
-You can also apply specific filters:
+You can also use the `@TCFilteredString` property wrapper for automatic cleaning:
 
 ```swift
-let cleanedTitle = cleaner.apply("Song Title (Remix) [feat. Another Artist]", filters: .remix, .featuredArtists)
-print(cleanedTitle) // Outputs: "Song Title"
+struct Song {
+    @TCFilteredString(filters: 
+        FilterDirectory.releaseInformation.remaster,
+        FilterDirectory.artistInformation.featuredArtists
+    )
+    var title: String
+}
+
+let song = Song(title: "Song Title (Remastered 2021) [feat. Another Artist]")
+print(song.title) // Outputs: "Song Title"
 ```
 
 ## System Requirements
