@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TCFilterApplierGroup: TCFilterApplier {
-    var subgroups: [TCFilterApplier] { get }
+    var subgroups: [any TCFilterApplier] { get }
 }

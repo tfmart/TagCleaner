@@ -5,27 +5,52 @@
 //  Created by Tomas Martins on 04/08/24.
 //
 
+import RegexBuilder
 
 struct TrackSuffixStandardizationFilter: TCFilterApplierGroup {
-    var regex: String {
-        "trackSuffixStandardization"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.remix.regex
+            Subgroups.edit.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
         case remix
         case edit
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .remix:
-                "remix"
+                Regex {
+                    "-"
+                    OneOrMore(.whitespace)
+                    Capture {
+                        OneOrMore(.any)
+                    }
+                    OneOrMore(.whitespace)
+                    ChoiceOf {
+                        "Remix"
+                        "Mix"
+                    }
+                }
+                .ignoresCase()
             case .edit:
-                "edit"
+                Regex {
+                    "-"
+                    OneOrMore(.whitespace)
+                    Capture {
+                        OneOrMore(.any)
+                    }
+                    OneOrMore(.whitespace)
+                    "Edit"
+                }
+                .ignoresCase()
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var remix: Subgroups = .remix
     static var edit: Subgroups = .edit

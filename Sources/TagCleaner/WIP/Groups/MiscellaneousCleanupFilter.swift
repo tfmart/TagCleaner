@@ -5,27 +5,49 @@
 //  Created by Tomas Martins on 04/08/24.
 //
 
+import RegexBuilder
 
 struct MiscellaneousCleanupFilter: TCFilterApplierGroup {
-    var regex: String {
-        "miscellaneousCleanup"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.specificSuffixes.regex
+            Subgroups.leadingTrailingPunctuation.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
         case specificSuffixes
         case leadingTrailingPunctuation
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .specificSuffixes:
-                "specificSuffixes"
+                Regex {
+                    ChoiceOf {
+                        " (Album Track)"
+                        " (Single)"
+                        " (Album)"
+                    }
+                }
+                .ignoresCase()
             case .leadingTrailingPunctuation:
-                "leadingTrailingPunctuation"
+                Regex {
+                    ChoiceOf {
+                        Regex {
+                            Anchor.startOfSubject
+                            OneOrMore(".")
+                        }
+                        Regex {
+                            OneOrMore(".")
+                            Anchor.endOfSubject
+                        }
+                    }
+                }
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var specificSuffixes: Subgroups = .specificSuffixes
     static var leadingTrailingPunctuation: Subgroups = .leadingTrailingPunctuation

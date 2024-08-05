@@ -6,9 +6,18 @@
 //
 
 
+import RegexBuilder
+
 struct MediaSourceCleanupFilter: TCFilterApplierGroup {
-    var regex: String {
-        "mediaSourceCleanup"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.videoIndicators.regex
+            Subgroups.audioIndicators.regex
+            Subgroups.fileExtensions.regex
+            Subgroups.qualityIndicators.regex
+            Subgroups.dateYearInformation.regex
+            Subgroups.fullAlbum.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
@@ -19,25 +28,111 @@ struct MediaSourceCleanupFilter: TCFilterApplierGroup {
         case dateYearInformation
         case fullAlbum
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .videoIndicators:
-                "videoIndicators"
+                Regex {
+                    ChoiceOf {
+                        Regex {
+                            ChoiceOf {
+                                "("
+                                "["
+                            }
+                            ChoiceOf {
+                                "Official Video"
+                                "Music Video"
+                                "Video"
+                            }
+                            ChoiceOf {
+                                ")"
+                                "]"
+                            }
+                        }
+                        Regex {
+                            " - "
+                            ChoiceOf {
+                                "Official Video"
+                                "Music Video"
+                                "Video"
+                            }
+                        }
+                    }
+                }
+                .ignoresCase()
             case .audioIndicators:
-                "audioIndicators"
+                Regex {
+                    ChoiceOf {
+                        Regex {
+                            ChoiceOf {
+                                "("
+                                "["
+                            }
+                            ChoiceOf {
+                                "Official Audio"
+                                "Audio"
+                            }
+                            ChoiceOf {
+                                ")"
+                                "]"
+                            }
+                        }
+                        Regex {
+                            " - "
+                            ChoiceOf {
+                                "Official Audio"
+                                "Audio"
+                            }
+                        }
+                    }
+                }
+                .ignoresCase()
             case .fileExtensions:
-                "fileExtensions"
+                Regex {
+                    "."
+                    ChoiceOf {
+                        "mp3"
+                        "wav"
+                        "flac"
+                        "m4a"
+                        "ogg"
+                    }
+                }
+                .anchorsMatchLineEndings()
+                .ignoresCase()
             case .qualityIndicators:
-                "qualityIndicators"
+                Regex {
+                    ChoiceOf {
+                        " HD"
+                        " HQ"
+                        "(HD)"
+                        "(HQ)"
+                    }
+                }
+                .anchorsMatchLineEndings()
+                .ignoresCase()
             case .dateYearInformation:
-                "dateYearInformation"
+                Regex {
+                    ChoiceOf {
+                        "("
+                        "["
+                    }
+                    Repeat(.digit, count: 4)
+                    ChoiceOf {
+                        ")"
+                        "]"
+                    }
+                }
             case .fullAlbum:
-                "fullAlbum"
+                Regex {
+                    " Full Album"
+                }
+                .anchorsMatchLineEndings()
+                .ignoresCase()
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var videoIndicators: Subgroups = .videoIndicators
     static var audioIndicators: Subgroups = .audioIndicators

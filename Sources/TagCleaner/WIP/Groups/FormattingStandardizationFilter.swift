@@ -5,27 +5,60 @@
 //  Created by Tomas Martins on 04/08/24.
 //
 
+import RegexBuilder
 
 struct FormattingStandardizationFilter: TCFilterApplierGroup {
-    var regex: String {
-        "formattingStandardization"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.featuringArtistFormat.regex
+            Subgroups.parenthesesBrackets.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
         case featuringArtistFormat
         case parenthesesBrackets
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .featuringArtistFormat:
-                "featuringArtistFormat"
+                Regex {
+                    ChoiceOf {
+                        "("
+                        "["
+                    }
+                    ChoiceOf {
+                        "feat."
+                        "ft."
+                        "featuring"
+                    }
+                    OneOrMore(.any)
+                    ChoiceOf {
+                        ")"
+                        "]"
+                    }
+                }
+                .ignoresCase()
             case .parenthesesBrackets:
-                "parenthesesBrackets"
+                Regex {
+                    ChoiceOf {
+                        Regex {
+                            "("
+                            OneOrMore(.any)
+                            ")"
+                        }
+                        Regex {
+                            "["
+                            OneOrMore(.any)
+                            "]"
+                        }
+                    }
+                }
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var featuringArtistFormat: Subgroups = .featuringArtistFormat
     static var parenthesesBrackets: Subgroups = .parenthesesBrackets

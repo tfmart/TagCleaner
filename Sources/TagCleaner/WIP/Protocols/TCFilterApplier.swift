@@ -8,5 +8,6 @@
 import Foundation
 
 protocol TCFilterApplier {
-    var regex: String { get }
+    associatedtype RegexFilter: RegexComponent
+    var regex: RegexFilter { get }
 }

@@ -5,10 +5,18 @@
 //  Created by Tomas Martins on 04/08/24.
 //
 
+import RegexBuilder
 
 struct TextNormalizationFilter: TCFilterApplierGroup {
-    var regex: String {
-        "textNormalization"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.htmlEntities.regex
+            Subgroups.zeroWidthCharacters.regex
+            Subgroups.nonBreakingSpaces.regex
+            Subgroups.smartQuotes.regex
+            Subgroups.whitespace.regex
+            Subgroups.multipleSpaces.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
@@ -19,25 +27,49 @@ struct TextNormalizationFilter: TCFilterApplierGroup {
         case whitespace
         case multipleSpaces
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .htmlEntities:
-                "htmlEntities"
+                Regex {
+                    "&"
+                    OneOrMore(.word)
+                    ";"
+                }
             case .zeroWidthCharacters:
-                "zeroWidthCharacters"
+                Regex {
+                    ChoiceOf {
+                        "\u{200B}"
+                        "\u{200C}"
+                        "\u{200D}"
+                        "\u{FEFF}"
+                    }
+                }
             case .nonBreakingSpaces:
-                "nonBreakingSpaces"
+                Regex {
+                    "\u{00A0}"
+                }
             case .smartQuotes:
-                "smartQuotes"
+                Regex {
+                    ChoiceOf {
+                        "\u{2018}"
+                        "\u{2019}"
+                        "\u{201C}"
+                        "\u{201D}"
+                    }
+                }
             case .whitespace:
-                "whitespace"
+                Regex {
+                    OneOrMore(.whitespace)
+                }
             case .multipleSpaces:
-                "multipleSpaces"
+                Regex {
+                    Repeat(.whitespace, count: 2)
+                }
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var htmlEntities: Subgroups = .htmlEntities
     static var zeroWidthCharacters: Subgroups = .zeroWidthCharacters

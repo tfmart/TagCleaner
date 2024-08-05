@@ -5,28 +5,53 @@
 //  Created by Tomas Martins on 04/08/24.
 //
 
-import Foundation
+import RegexBuilder
 
 struct ContentLabelFilter: TCFilterApplierGroup {
-    var regex: String {
-        "contentLabel"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.explicit.regex
+            Subgroups.clean.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
         case explicit
         case clean
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .explicit:
-                "explicit"
+                Regex {
+                    ChoiceOf {
+                        "("
+                        "["
+                    }
+                    "Explicit"
+                    ChoiceOf {
+                        ")"
+                        "]"
+                    }
+                }
+                .ignoresCase()
             case .clean:
-                "clean"
+                Regex {
+                    ChoiceOf {
+                        "("
+                        "["
+                    }
+                    "Clean"
+                    ChoiceOf {
+                        ")"
+                        "]"
+                    }
+                }
+                .ignoresCase()
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var explicit: Subgroups = .explicit
     static var clean: Subgroups = .clean

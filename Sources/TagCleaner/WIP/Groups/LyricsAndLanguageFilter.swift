@@ -5,27 +5,45 @@
 //  Created by Tomas Martins on 04/08/24.
 //
 
+import RegexBuilder
 
 struct LyricsAndLanguageFilter: TCFilterApplierGroup {
-    var regex: String {
-        "lyricsAndLanguage"
+    var regex: some RegexComponent {
+        ChoiceOf {
+            Subgroups.lyricsIndicators.regex
+            Subgroups.languageSubtitles.regex
+        }
     }
     
     enum Subgroups: TCFilterApplier, CaseIterable {
         case lyricsIndicators
         case languageSubtitles
         
-        var regex: String {
+        var regex: some RegexComponent {
             switch self {
             case .lyricsIndicators:
-                "lyricsIndicators"
+                Regex {
+                    ChoiceOf {
+                        "(Lyric Video)"
+                        "(Lyrics Video)"
+                        "(With Lyrics)"
+                    }
+                }
+                .ignoresCase()
             case .languageSubtitles:
-                "languageSubtitles"
+                Regex {
+                    ChoiceOf {
+                        "Sub Español"
+                        "(Letra)"
+                        "(En vivo)"
+                    }
+                }
+                .ignoresCase()
             }
         }
     }
     
-    var subgroups: [TCFilterApplier] { Subgroups.allCases }
+    var subgroups: [any TCFilterApplier] { Subgroups.allCases }
     
     static var lyricsIndicators: Subgroups = .lyricsIndicators
     static var languageSubtitles: Subgroups = .languageSubtitles
