@@ -66,7 +66,7 @@ struct Song {
         FilterDirectory.releaseInformation.remaster,
         FilterDirectory.artistInformation.featuredArtists
     )
-    var title: String
+    var title: String = ""
 }
 
 let song = Song(title: "Song Title (Remastered 2021) [feat. Another Artist]")
