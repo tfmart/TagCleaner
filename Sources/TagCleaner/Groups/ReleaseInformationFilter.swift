@@ -9,6 +9,11 @@ import Foundation
 import RegexBuilder
 
 /// A filter for cleaning release information from titles.
+/// This filter group includes subfilters for:
+/// - Remastered versions (e.g., "Remastered", "2021 Remaster")
+/// - Reissues (e.g., "2020 Re-issue")
+/// - Version information (e.g., "Deluxe Version", "Extended Edition")
+/// - Anniversary editions (e.g., "20th Anniversary Edition")
 public struct ReleaseInformationFilter: TCFilterApplierGroup {
     
     /// The subgroups of release information filters.
@@ -26,13 +31,21 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
     /// A filter for removing anniversary edition information.
     public let anniversary: Subgroups = .anniversary
     
+    /// A filter for removing EP information.
+    public let ep: Subgroups = .ep
+    
+    /// A filter for removing single release information.
+    public let single: Subgroups = .single
+    
     /// The regex pattern used for filtering release information.
-    public  var regex: some RegexComponent {
+    public var regex: some RegexComponent {
         ChoiceOf {
-            Subgroups.reissue.regex
+            Subgroups.remaster.regex
             Subgroups.reissue.regex
             Subgroups.version.regex
             Subgroups.anniversary.regex
+            Subgroups.single.regex
+            Subgroups.ep.regex
         }
     }
     
@@ -42,6 +55,8 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
         case reissue
         case version
         case anniversary
+        case single
+        case ep
         
         public var regex: some RegexComponent {
             switch self {
@@ -169,6 +184,26 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                         }
                     })
                 }
+                .ignoresCase()
+            case .ep:
+                Regex {
+                    ChoiceOf {
+                        Regex { "- EP" }
+                        Regex { "(EP)" }
+                        Regex { "[EP]" }
+                    }
+                }
+                .anchorsMatchLineEndings()
+                .ignoresCase()
+            case .single:
+                Regex {
+                    ChoiceOf {
+                        Regex { "- Single" }
+                        Regex { "(Single)" }
+                        Regex { "[Single]" }
+                    }
+                }
+                .anchorsMatchLineEndings()
                 .ignoresCase()
             }
         }

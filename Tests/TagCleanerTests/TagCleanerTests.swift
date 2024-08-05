@@ -137,6 +137,16 @@ final class TagCleanerTests: XCTestCase {
         }
     }
     
+    func testSingleAndEPAlbums() {
+        let testCases = [
+            ("Album Title - Single", "Album Title"),
+            ("Album Title - EP", "Album Title")
+        ]
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.ep, FilterDirectory.releaseInformation.single), expected)
+        }
+    }
+    
     // MARK: - Parody and Cover Filter Tests
     
     func testParodyFilter() {
