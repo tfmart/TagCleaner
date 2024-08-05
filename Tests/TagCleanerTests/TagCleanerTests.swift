@@ -137,13 +137,27 @@ final class TagCleanerTests: XCTestCase {
         }
     }
     
-    func testSingleAndEPAlbums() {
+    func testSingleAndEPAlbumsFilter() {
         let testCases = [
             ("Album Title - Single", "Album Title"),
             ("Album Title - EP", "Album Title")
         ]
         for (input, expected) in testCases {
             XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.ep, FilterDirectory.releaseInformation.single), expected)
+        }
+    }
+    
+    func testRemixAndEditFilter() {
+        let testCases = [
+            ("Song Title - DJ Remix", "Song Title"),
+            ("Song Title (DJ Remix)", "Song Title"),
+            ("Song Title [DJ Remix]", "Song Title"),
+            ("Song Title - DJ Edit", "Song Title"),
+            ("Song Title (DJ Edit)", "Song Title"),
+            ("Song Title [DJ Edit]", "Song Title")
+        ]
+        for (input, expected) in testCases {
+            XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.remix), expected)
         }
     }
     
