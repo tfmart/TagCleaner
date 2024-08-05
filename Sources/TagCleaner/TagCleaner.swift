@@ -48,4 +48,8 @@ public struct TagCleaner {
         }
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+    
+    public init() {
+        
+    }
 }
