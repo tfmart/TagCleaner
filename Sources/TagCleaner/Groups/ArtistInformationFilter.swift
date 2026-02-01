@@ -29,21 +29,31 @@ public struct ArtistInformationFilter: TCFilterApplierGroup {
                 Regex {
                     ChoiceOf {
                         Regex {
+                            "("
                             ChoiceOf {
-                                "("
-                                "["
+                                "feat. "
+                                "ft. "
                             }
-                            "feat. "
-                            OneOrMore(.any, .reluctant)
-                            ChoiceOf {
-                                ")"
-                                "]"
-                            }
+                            OneOrMore(.anyNonNewline.subtracting(.anyOf(")")))
+                            ")"
                             Optionally(" ")
                         }
                         Regex {
-                            " feat. "
-                            OneOrMore(.any)
+                            "["
+                            ChoiceOf {
+                                "feat. "
+                                "ft. "
+                            }
+                            OneOrMore(.anyNonNewline.subtracting(.anyOf("]")))
+                            "]"
+                            Optionally(" ")
+                        }
+                        Regex {
+                            ChoiceOf {
+                                " feat. "
+                                " ft. "
+                            }
+                            OneOrMore(.anyNonNewline.subtracting(.anyOf("([")))
                         }
                     }
                 }
