@@ -80,131 +80,194 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
             switch self {
             case .remaster:
                 Regex {
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "["
-                            "("
-                            "- "
-                        }
-                    })
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.digit)
-                            One(.whitespace)
-                        }
-                    )
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.word)
-                            One(.whitespace)
-                        }
-                    )
                     ChoiceOf {
-                        "Remaster"
-                        "Remastered"
-                        "Re-master"
-                        "Re-mastered"
-                    }
-                    ZeroOrMore(.anyNonNewline)
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "]"
+                        Regex {
+                            "("
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Remaster"
+                                "Remastered"
+                                "Re-master"
+                                "Re-mastered"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf(")")))
                             ")"
                         }
-                    })
+                        Regex {
+                            "["
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Remaster"
+                                "Remastered"
+                                "Re-master"
+                                "Re-mastered"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("]")))
+                            "]"
+                        }
+                        Regex {
+                            "- "
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Remaster"
+                                "Remastered"
+                                "Re-master"
+                                "Re-mastered"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("([")))
+                        }
+                    }
                 }
                 .ignoresCase()
             case .reissue:
                 Regex {
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "["
-                            "("
-                        }
-                    })
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.digit)
-                            One(.whitespace)
-                        }
-                    )
                     ChoiceOf {
-                        "Re-issue"
-                        "Reissue"
-                    }
-                    ZeroOrMore(.anyNonNewline)
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "]"
+                        Regex {
+                            "("
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            ChoiceOf { "Re-issue"; "Reissue" }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf(")")))
                             ")"
-                            "- "
                         }
-                    })
+                        Regex {
+                            "["
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            ChoiceOf { "Re-issue"; "Reissue" }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("]")))
+                            "]"
+                        }
+                        Regex {
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            ChoiceOf { "Re-issue"; "Reissue" }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("([")))
+                        }
+                    }
                 }
                 .ignoresCase()
             case .version:
                 Regex {
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "["
-                            "("
-                            "- "
-                        }
-                    })
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.digit)
-                            One(.whitespace)
-                        }
-                    )
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.word)
-                            One(.whitespace)
-                        }
-                    )
                     ChoiceOf {
-                        "Version"
-                        "Edition"
-                        "Deluxe"
-                        "Expanded"
-                        "Special"
-                        "Limited"
-                    }
-                    ZeroOrMore(.anyNonNewline)
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "]"
+                        Regex {
+                            "("
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Version"
+                                "Edition"
+                                "Deluxe"
+                                "Expanded"
+                                "Special"
+                                "Limited"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf(")")))
                             ")"
                         }
-                    })
+                        Regex {
+                            "["
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Version"
+                                "Edition"
+                                "Deluxe"
+                                "Expanded"
+                                "Special"
+                                "Limited"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("]")))
+                            "]"
+                        }
+                        Regex {
+                            "- "
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Version"
+                                "Edition"
+                                "Deluxe"
+                                "Expanded"
+                                "Special"
+                                "Limited"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("([")))
+                        }
+                    }
                 }
                 .ignoresCase()
             case .anniversary:
                 Regex {
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "["
+                    ChoiceOf {
+                        Regex {
                             "("
-                        }
-                    })
-                    OneOrMore(.digit)
-                    Regex {
-                        ChoiceOf {
-                            "th"
-                            "st"
-                            "nd"
-                            "rd"
-                        }
-                    }
-                    " Anniversary"
-                    ZeroOrMore(.anyNonNewline)
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "]"
+                            OneOrMore(.digit)
+                            ChoiceOf { "th"; "st"; "nd"; "rd" }
+                            " Anniversary"
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf(")")))
                             ")"
                         }
-                    })
+                        Regex {
+                            "["
+                            OneOrMore(.digit)
+                            ChoiceOf { "th"; "st"; "nd"; "rd" }
+                            " Anniversary"
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("]")))
+                            "]"
+                        }
+                        Regex {
+                            OneOrMore(.digit)
+                            ChoiceOf { "th"; "st"; "nd"; "rd" }
+                            " Anniversary"
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("([")))
+                        }
+                    }
                 }
                 .ignoresCase()
             case .ep:
@@ -229,41 +292,73 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                 .ignoresCase()
             case .remix:
                 Regex {
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "["
-                            "("
-                            "- "
-                        }
-                    })
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.digit)
-                            One(.whitespace)
-                        }
-                    )
-                    Optionally(
-                        Regex {
-                            ZeroOrMore(.word)
-                            One(.whitespace)
-                        }
-                    )
                     ChoiceOf {
-                        "Remix"
-                        "Edit"
-                        "Mix"
-                        "Dub"
-                        "Version"
-                        "Remixed"
-                        "RMX"
-                    }
-                    ZeroOrMore(.anyNonNewline)
-                    Optionally(Regex {
-                        ChoiceOf {
-                            "]"
+                        Regex {
+                            "("
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Remix"
+                                "Edit"
+                                "Mix"
+                                "Dub"
+                                "Version"
+                                "Remixed"
+                                "RMX"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf(")")))
                             ")"
                         }
-                    })
+                        Regex {
+                            "["
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Remix"
+                                "Edit"
+                                "Mix"
+                                "Dub"
+                                "Version"
+                                "Remixed"
+                                "RMX"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("]")))
+                            "]"
+                        }
+                        Regex {
+                            "- "
+                            Optionally(Regex {
+                                ZeroOrMore(.digit)
+                                One(.whitespace)
+                            })
+                            Optionally(Regex {
+                                ZeroOrMore(.word)
+                                One(.whitespace)
+                            })
+                            ChoiceOf {
+                                "Remix"
+                                "Edit"
+                                "Mix"
+                                "Dub"
+                                "Version"
+                                "Remixed"
+                                "RMX"
+                            }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("([")))
+                        }
+                    }
                 }
                 .ignoresCase()
                 .anchorsMatchLineEndings()
@@ -271,21 +366,24 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
             case .bonusTrack:
                 Regex {
                     ChoiceOf {
-                        Regex { " - " }
-                        Regex { " (" }
-                        Regex { " [" }
-                    }
-                    ChoiceOf {
-                        "Bonus Track"
-                        "Bonus"
-                    }
-                    ZeroOrMore(.anyNonNewline)
-                    Optionally(Regex {
-                        ChoiceOf {
+                        Regex {
+                            " ("
+                            ChoiceOf { "Bonus Track"; "Bonus" }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf(")")))
                             ")"
+                        }
+                        Regex {
+                            " ["
+                            ChoiceOf { "Bonus Track"; "Bonus" }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("]")))
                             "]"
                         }
-                    })
+                        Regex {
+                            " - "
+                            ChoiceOf { "Bonus Track"; "Bonus" }
+                            ZeroOrMore(.anyNonNewline.subtracting(.anyOf("([")))
+                        }
+                    }
                 }
                 .anchorsMatchLineEndings()
                 .ignoresCase()
