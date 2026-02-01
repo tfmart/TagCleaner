@@ -34,11 +34,12 @@ public struct ArtistInformationFilter: TCFilterApplierGroup {
                                 "["
                             }
                             "feat. "
-                            OneOrMore(.any)
+                            OneOrMore(.any, .reluctant)
                             ChoiceOf {
                                 ")"
                                 "]"
                             }
+                            Optionally(" ")
                         }
                         Regex {
                             " feat. "
