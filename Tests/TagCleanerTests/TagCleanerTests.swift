@@ -118,9 +118,16 @@ final class TagCleanerTests: XCTestCase {
             ("Track Title [Single Version]", "Track Title"),
             ("Track Title (Deluxe Edition)", "Track Title"),
             ("Track Title - Mono Version", "Track Title"),
-            ("Track Title - Stereo Version", "Track Title")
+            ("Track Title - Stereo Version", "Track Title"),
+            ("1999 (Deluxe)", "1999"),
+            ("1999 [Deluxe]", "1999"),
+            ("1999 - Deluxe", "1999"),
+            ("1999 (Expanded)", "1999"),
+            ("1999 (Special)", "1999"),
+            ("1999 (Limited)", "1999"),
+            ("1999 (Super Deluxe)", "1999")
         ]
-        
+
         for (input, expected) in testCases {
             XCTAssertEqual(cleaner.apply(input, filter: FilterDirectory.releaseInformation.version), expected)
         }

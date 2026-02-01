@@ -166,6 +166,10 @@ public struct ReleaseInformationFilter: TCFilterApplierGroup {
                     ChoiceOf {
                         "Version"
                         "Edition"
+                        "Deluxe"
+                        "Expanded"
+                        "Special"
+                        "Limited"
                     }
                     ZeroOrMore(.anyNonNewline)
                     Optionally(Regex {
